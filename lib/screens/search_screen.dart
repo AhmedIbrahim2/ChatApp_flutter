@@ -52,10 +52,7 @@ class _SearchScreenState extends State<SearchScreen> {
     if (_searchController.text != "") {
       for (var userSnapshot in _snapshotResultsList!) {
         var title =
-        UserModel
-            .fromSnapshot(userSnapshot)
-            .userEmail!
-            .toLowerCase();
+            UserModel.fromSnapshot(userSnapshot).userEmail!.toLowerCase();
         if (title.contains(
           _searchController.text.toLowerCase(),
         )) {
@@ -66,7 +63,7 @@ class _SearchScreenState extends State<SearchScreen> {
       showResults = List.from(_snapshotResultsList!);
     }
     setState(
-          () {
+      () {
         _searchResultList = showResults;
       },
     );
@@ -75,7 +72,7 @@ class _SearchScreenState extends State<SearchScreen> {
   getSnapshots() async {
     var data = await FirebaseFirestore.instance.collection('users').get();
     setState(
-          () {
+      () {
         _snapshotResultsList = data.docs;
       },
     );
@@ -83,50 +80,37 @@ class _SearchScreenState extends State<SearchScreen> {
     return "complete";
   }
 
-
   sendMessage(String userName) {
-    List<String> users = [userName, Constants.myName];
+    List<String> users = [Constants.myName, userName];
 
-    String chatRoomId = getChatRoomId(userName, Constants.myName);
+    String chatRoomId = getChatRoomId(Constants.myName, userName);
 
     Map<String, dynamic> chatRoom = {
       "users": users,
       "chatRoomId": chatRoomId,
     };
 
+    DataBaseMethods().addChatRoom(chatRoom, chatRoomId);
 
-    Navigator.push(context, MaterialPageRoute(
-        builder: (context) =>
-            Chat(
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Chat(
               chatRoomId: chatRoomId,
-            )
-    ));
+            )));
   }
 
-  getChatRoomId(String a, String b) async {
+  getChatRoomId(String a, String b) {
     if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
       return "$b\_$a";
     } else {
       return "$a\_$b";
     }
   }
-  createChatroomAndStartConversation({required BuildContext context,required String userName,required QuerySnapshot snapshot}) {
-    String chatRoomId = getChatRoomId(userName, Constants.myName);
-    List<String> users = [userName,Constants.myName];
-    Map<String,dynamic> chatRoomMap ={
-      'users':users,
-      'chatRoomId':chatRoomId,
-    };
-    DataBaseMethods().createChatRoom(chatRoomId, chatRoomMap);
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>ConversationScreen()));
-  }
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery
-        .of(context)
-        .size
-        .height;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -148,11 +132,11 @@ class _SearchScreenState extends State<SearchScreen> {
               child: Row(children: [
                 Expanded(
                     child: TextFormField(
-                      controller: _searchController,
-                      decoration: InputDecoration(
-                        hintText: 'Email',
-                      ),
-                    )),
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    hintText: 'Email',
+                  ),
+                )),
                 SizedBox(
                   width: 10,
                 ),
@@ -164,94 +148,89 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             _searchController.text.isEmpty
                 ? Column(
-              children: [
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  'No Data Found',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              ],
-            )
+                    children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        'No Data Found',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    ],
+                  )
                 : SingleChildScrollView(
-              physics: const ScrollPhysics(),
-              child: SizedBox(
-                height: height * 0.46,
-                child: ListView.separated(
-                  physics: const ScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    var userData = _searchResultList[index];
-                    return Container(
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                userData['userName'],
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
+                    physics: const ScrollPhysics(),
+                    child: SizedBox(
+                      height: height * 0.46,
+                      child: ListView.separated(
+                        physics: const ScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          var userData = _searchResultList[index];
+                          return Container(
+                            padding: EdgeInsets.all(10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      userData['userName'],
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      userData['userEmail'],
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              Text(
-                                userData['userEmail'],
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                          InkWell(
-                            onTap: () async {
-                           createChatroomAndStartConversation(userName);
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.yellow,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Message',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
+                                GestureDetector(
+                                  onTap: () async {
+                                    sendMessage(userData['userName']);
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.yellow,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        'Message',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
-                          ),
-                        ],
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return const SizedBox(
+                            height: 15,
+                          );
+                        },
+                        itemCount: _searchResultList.length,
                       ),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return const SizedBox(
-                      height: 15,
-                    );
-                  },
-                  itemCount: _searchResultList.length,
-                ),
-              ),
-            )
+                    ),
+                  )
           ],
         ),
       ),
     );
   }
-
-
 }
-
