@@ -1,16 +1,17 @@
-import 'package:chat_app/login/Patient.dart';
+import 'package:chat_app/shared/images.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'Pharmcy.dart';
-import 'register.dart';
+import 'package:flutter/services.dart';
+import '../../shared/animation/fade_animation.dart';
+import 'patient.dart';
+import 'pharmacy.dart';
+import 'register_screen.dart';
 
-import '../../animation/FadeAnimation.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginScreen extends StatefulWidget {
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
 var check = 0;
@@ -19,10 +20,10 @@ _displayDialog(BuildContext context) async {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('No user found for that email.'),
+          title: const Text('No user found for that email.'),
           actions: <Widget>[
-            new ElevatedButton(
-              child: new Text('SUBMIT'),
+            ElevatedButton(
+              child: const Text('SUBMIT'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -37,10 +38,10 @@ _displayDialog1(BuildContext context) async {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Wrong password provided for that user.'),
+          title: const Text('Wrong password provided for that user.'),
           actions: <Widget>[
-            new ElevatedButton(
-              child: new Text('SUBMIT'),
+            ElevatedButton(
+              child:  const Text('SUBMIT'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -50,13 +51,13 @@ _displayDialog1(BuildContext context) async {
       });
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginScreenState extends State<LoginScreen> {
   bool _isObscure3 = true;
   bool visible = false;
   var check = 0;
   final _formkey = GlobalKey<FormState>();
-  final TextEditingController emailController = new TextEditingController();
-  final TextEditingController passwordController = new TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController =  TextEditingController();
 
   final _auth = FirebaseAuth.instance;
 
@@ -67,22 +68,21 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        brightness: Brightness.light,
         backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios,
             size: 20,
             color: Colors.black,
           ),
-        ),
+        ), systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: Form(
         key: _formkey,
-        child: Container(
+        child: SizedBox(
           height: MediaQuery.of(context).size.height,
           width: double.infinity,
           child: Column(
@@ -94,27 +94,25 @@ class _LoginPageState extends State<LoginPage> {
                   children: <Widget>[
                     Column(
                       children: <Widget>[
-                        FadeAnimation(
-                            1,
-                            Text(
+
+                            const Text(
                               "Login",
                               style: TextStyle(
                                   fontSize: 30, fontWeight: FontWeight.bold),
-                            )),
-                        SizedBox(
+                            ),
+                        const SizedBox(
                           height: 20,
                         ),
-                        FadeAnimation(
-                            1.2,
+
                             Text(
                               "Login to your account",
                               style: TextStyle(
                                   fontSize: 15, color: Colors.grey[700]),
-                            )),
+                            )
                       ],
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
                       child: Column(
                         children: <Widget>[
                           TextFormField(
@@ -123,20 +121,19 @@ class _LoginPageState extends State<LoginPage> {
                               filled: true,
                               fillColor: Colors.white,
                               hintText: 'Email',
-                              enabled: true,
                               contentPadding: const EdgeInsets.only(
                                   left: 14.0, bottom: 8.0, top: 8.0),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: new BorderSide(color: Colors.white),
-                                borderRadius: new BorderRadius.circular(10),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: const BorderSide(color: Colors.black),
+                                borderRadius: BorderRadius.circular(10),
                               ),
                               enabledBorder: UnderlineInputBorder(
-                                borderSide: new BorderSide(color: Colors.white),
-                                borderRadius: new BorderRadius.circular(10),
+                                borderSide: const BorderSide(color: Colors.black26),
+                                borderRadius: BorderRadius.circular(10),
                               ),
                             ),
                             validator: (value) {
-                              if (value!.length == 0) {
+                              if (value!.isEmpty) {
                                 return "Email cannot be empty";
                               }
                               if (!RegExp(
@@ -152,7 +149,7 @@ class _LoginPageState extends State<LoginPage> {
                             },
                             keyboardType: TextInputType.emailAddress,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           TextFormField(
@@ -174,17 +171,17 @@ class _LoginPageState extends State<LoginPage> {
                               enabled: true,
                               contentPadding: const EdgeInsets.only(
                                   left: 14.0, bottom: 8.0, top: 15.0),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: new BorderSide(color: Colors.white),
-                                borderRadius: new BorderRadius.circular(10),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: const BorderSide(color: Colors.black),
+                                borderRadius: BorderRadius.circular(10),
                               ),
                               enabledBorder: UnderlineInputBorder(
-                                borderSide: new BorderSide(color: Colors.white),
-                                borderRadius: new BorderRadius.circular(10),
+                                borderSide: const BorderSide(color: Colors.black26),
+                                borderRadius: BorderRadius.circular(10),
                               ),
                             ),
                             validator: (value) {
-                              RegExp regex = new RegExp(r'^.{6,}$');
+                              RegExp regex = RegExp(r'^.{6,}$');
                               if (value!.isEmpty) {
                                 return "Password cannot be empty";
                               }
@@ -202,8 +199,7 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                     ),
-                    FadeAnimation(
-                        1.4,
+
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 40),
                           child: Container(
@@ -242,9 +238,8 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           ),
-                        )),
-                    FadeAnimation(
-                        1.5,
+                        ),
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -254,7 +249,7 @@ class _LoginPageState extends State<LoginPage> {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => Register(),
+                                    builder: (context) => const Register(),
                                   ),
                                 );
                               },
@@ -265,19 +260,18 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           ],
-                        ))
+                        )
                   ],
                 ),
               ),
-              FadeAnimation(
-                  1.2,
+
                   Container(
                     height: MediaQuery.of(context).size.height / 3,
                     decoration: const BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage('asset/background.png'),
-                            fit: BoxFit.cover)),
-                  )),
+                            image: AssetImage(Images.backgroundImg),
+                            fit: BoxFit.cover,),),
+                  ),
             ],
           ),
         ),
@@ -293,18 +287,18 @@ class _LoginPageState extends State<LoginPage> {
         .get()
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
-        if (documentSnapshot.get('rool') == "Patient") {
+        if (documentSnapshot.get('userRole') == "Patient") {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => Patient(),
+              builder: (context) => const Patient(),
             ),
           );
         } else {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => Pharmacy(),
+              builder: (context) => const Pharmacy(),
             ),
           );
         }
@@ -325,7 +319,7 @@ class _LoginPageState extends State<LoginPage> {
         route();
       } on FirebaseAuthException catch (e) {
         check = 1;
-        Text("Invalid Email Or password");
+        const Text("Invalid Email Or password");
         if (e.code == 'user-not-found') {
           const Text("No user found for that email.");
           check = 1;

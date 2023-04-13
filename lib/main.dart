@@ -1,17 +1,17 @@
+import 'package:chat_app/shared/helper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-import 'FirstScreen.dart';
+import 'screens/main_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-      options: FirebaseOptions(
+      options: const FirebaseOptions(
           apiKey: "AIzaSyDdRXrkocrXopW9UsseuvpYHzz7XMf5s84",
           appId: "chat-app-c886b",
           messagingSenderId: "messagingSenderId",
           projectId: "chat-app-c886b"));
-  runApp(const Home());
+  runApp(const Home(),);
 }
 
 class Home extends StatelessWidget {
@@ -25,7 +25,7 @@ class Home extends StatelessWidget {
         primarySwatch: Colors.indigo,
       ),
       debugShowCheckedModeBanner: false,
-      home: FirstScreen(),
+      home: const FirstScreen(),
     );
   }
 }

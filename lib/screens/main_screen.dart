@@ -1,9 +1,11 @@
 // ignore: file_names
+import 'package:chat_app/shared/images.dart';
 import 'package:flutter/material.dart';
 
-import '../../animation/FadeAnimation.dart';
-import 'login/login1.dart';
-import 'login/register.dart';
+
+import '../shared/animation/fade_animation.dart';
+import 'login/login_screen.dart';
+import 'login/register_screen.dart';
 
 class FirstScreen extends StatelessWidget {
   const FirstScreen({super.key});
@@ -14,7 +16,10 @@ class FirstScreen extends StatelessWidget {
       body: SafeArea(
         child: Container(
           width: double.infinity,
-          height: MediaQuery.of(context).size.height,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height,
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -22,45 +27,44 @@ class FirstScreen extends StatelessWidget {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  FadeAnimation(
-                      1,
-                      const Text(
+
+                      Text(
                         "Welcome",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 30),
-                      )),
+                      ),
                   const SizedBox(
                     height: 20,
                   ),
-                  FadeAnimation(
-                      1.2,
+
                       Text(
                         "Automatic identity verification which enables you to verify your identity",
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.grey[700], fontSize: 15),
-                      )),
+                      ),
                 ],
               ),
-              FadeAnimation(
-                  1.4,
+
                   Container(
-                    height: MediaQuery.of(context).size.height / 3,
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height / 3,
                     decoration: const BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage('asset/help.png'))),
-                  )),
+                            image: AssetImage(Images.helpImg,),),),
+                  ),
               Column(
                 children: <Widget>[
-                  FadeAnimation(
-                      1.5,
+
                       MaterialButton(
                         minWidth: double.infinity,
                         height: 60,
                         onPressed: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginPage()));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginScreen(),),);
                         },
                         shape: RoundedRectangleBorder(
                             side: const BorderSide(color: Colors.black),
@@ -70,12 +74,11 @@ class FirstScreen extends StatelessWidget {
                           style: TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 18),
                         ),
-                      )),
+                      ),
                   const SizedBox(
                     height: 20,
                   ),
-                  FadeAnimation(
-                      1.6,
+
                       Container(
                         padding: const EdgeInsets.only(top: 3, left: 3),
                         decoration: BoxDecoration(
@@ -93,7 +96,7 @@ class FirstScreen extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Register()));
+                                    builder: (context) => const Register()));
                           },
                           color: Colors.yellow,
                           elevation: 0,
@@ -105,7 +108,7 @@ class FirstScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w600, fontSize: 18),
                           ),
                         ),
-                      ))
+                      )
                 ],
               )
             ],

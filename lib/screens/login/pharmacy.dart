@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'login1.dart';
+import 'login_screen.dart';
 
 class Pharmacy extends StatefulWidget {
   const Pharmacy({super.key});
@@ -15,13 +15,13 @@ class _PharmacyState extends State<Pharmacy> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Pharmacy"),
+        title: const Text("Pharmacy"),
         actions: [
           IconButton(
             onPressed: () {
               logout(context);
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.logout,
             ),
           )
@@ -31,13 +31,13 @@ class _PharmacyState extends State<Pharmacy> {
   }
 
   Future<void> logout(BuildContext context) async {
-    CircularProgressIndicator();
-    await FirebaseAuth.instance.signOut();
-    Navigator.pushReplacement(
+    const CircularProgressIndicator();
+    await FirebaseAuth.instance.signOut().then((value) => Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => LoginPage(),
+        builder: (context) => LoginScreen(),
       ),
-    );
+    ),);
+
   }
 }
