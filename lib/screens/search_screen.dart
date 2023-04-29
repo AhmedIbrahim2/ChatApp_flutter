@@ -80,10 +80,10 @@ class _SearchScreenState extends State<SearchScreen> {
     return "complete";
   }
 
-  sendMessage(String userName) {
-    List<String> users = [Constants.myName, userName];
+  sendMessage(String email) {
+    List<String> users = [Constants.myName, email];
 
-    String chatRoomId = getChatRoomId(Constants.myName, userName);
+    String chatRoomId = getChatRoomId("email", email);
 
     Map<String, dynamic> chatRoom = {
       "users": users,
@@ -92,14 +92,18 @@ class _SearchScreenState extends State<SearchScreen> {
 
     DataBaseMethods().addChatRoom(chatRoom, chatRoomId);
 
-    Navigator.push(
+/*    Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => Chat(
-              chatRoomId: chatRoomId,
-            )));
+                  chatRoomId: chatRoomId,
+                )));
+  }*/
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ConversationScreen()));
   }
-
   getChatRoomId(String a, String b) {
     if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
       return "$b\_$a";

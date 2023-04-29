@@ -1,3 +1,4 @@
+import 'package:chat_app/screens/chat/conv_screen.dart';
 import 'package:chat_app/shared/helper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,9 @@ Future<void> main() async {
           appId: "chat-app-c886b",
           messagingSenderId: "messagingSenderId",
           projectId: "chat-app-c886b"));
-  runApp(const Home(),);
+  runApp(
+    const Home(),
+  );
 }
 
 class Home extends StatelessWidget {
@@ -20,11 +23,11 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: "Courgette",
         primarySwatch: Colors.indigo,
       ),
-      debugShowCheckedModeBanner: false,
       home: const FirstScreen(),
     );
   }
